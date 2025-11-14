@@ -1,0 +1,16 @@
+{
+  "name": "shoryabaj",
+  "version": "1.0.0",
+  "author": "Shorya Baj",
+  "license": "MIT",
+  "scripts": {
+    "compile": "rm -rf dist/lib && tsc && tsc --build tsconfig.es5.json"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "@shoryabaj/utils": "^0.0.1",
+    "@shoryabaj/utils-test": "^0.0.1"
+  }
+}
