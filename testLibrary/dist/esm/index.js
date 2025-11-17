@@ -130,7 +130,7 @@ function requireReactJsxRuntime_development () {
 	        testStringCoercion(value);
 	        var JSCompiler_inline_result = !1;
 	      } catch (e) {
-	        JSCompiler_inline_result = true;
+	        JSCompiler_inline_result = !0;
 	      }
 	      if (JSCompiler_inline_result) {
 	        JSCompiler_inline_result = console;
@@ -174,29 +174,29 @@ function requireReactJsxRuntime_development () {
 	    function hasValidKey(config) {
 	      if (hasOwnProperty.call(config, "key")) {
 	        var getter = Object.getOwnPropertyDescriptor(config, "key").get;
-	        if (getter && getter.isReactWarning) return false;
+	        if (getter && getter.isReactWarning) return !1;
 	      }
 	      return void 0 !== config.key;
 	    }
 	    function defineKeyPropWarningGetter(props, displayName) {
 	      function warnAboutAccessingKey() {
 	        specialPropKeyWarningShown ||
-	          ((specialPropKeyWarningShown = true),
+	          ((specialPropKeyWarningShown = !0),
 	          console.error(
 	            "%s: `key` is not a prop. Trying to access it will result in `undefined` being returned. If you need to access the same value within the child component, you should pass it as a different prop. (https://react.dev/link/special-props)",
 	            displayName
 	          ));
 	      }
-	      warnAboutAccessingKey.isReactWarning = true;
+	      warnAboutAccessingKey.isReactWarning = !0;
 	      Object.defineProperty(props, "key", {
 	        get: warnAboutAccessingKey,
-	        configurable: true
+	        configurable: !0
 	      });
 	    }
 	    function elementRefGetterWithDeprecationWarning() {
 	      var componentName = getComponentNameFromType(this.type);
 	      didWarnAboutElementRef[componentName] ||
-	        ((didWarnAboutElementRef[componentName] = true),
+	        ((didWarnAboutElementRef[componentName] = !0),
 	        console.error(
 	          "Accessing element.ref was removed in React 19. ref is now a regular prop. It will be removed from the JSX Element type in a future release."
 	        ));
@@ -214,33 +214,33 @@ function requireReactJsxRuntime_development () {
 	      };
 	      null !== (void 0 !== refProp ? refProp : null)
 	        ? Object.defineProperty(type, "ref", {
-	            enumerable: false,
+	            enumerable: !1,
 	            get: elementRefGetterWithDeprecationWarning
 	          })
-	        : Object.defineProperty(type, "ref", { enumerable: false, value: null });
+	        : Object.defineProperty(type, "ref", { enumerable: !1, value: null });
 	      type._store = {};
 	      Object.defineProperty(type._store, "validated", {
-	        configurable: false,
-	        enumerable: false,
-	        writable: true,
+	        configurable: !1,
+	        enumerable: !1,
+	        writable: !0,
 	        value: 0
 	      });
 	      Object.defineProperty(type, "_debugInfo", {
-	        configurable: false,
-	        enumerable: false,
-	        writable: true,
+	        configurable: !1,
+	        enumerable: !1,
+	        writable: !0,
 	        value: null
 	      });
 	      Object.defineProperty(type, "_debugStack", {
-	        configurable: false,
-	        enumerable: false,
-	        writable: true,
+	        configurable: !1,
+	        enumerable: !1,
+	        writable: !0,
 	        value: debugStack
 	      });
 	      Object.defineProperty(type, "_debugTask", {
-	        configurable: false,
-	        enumerable: false,
-	        writable: true,
+	        configurable: !1,
+	        enumerable: !1,
+	        writable: !0,
 	        value: debugTask
 	      });
 	      Object.freeze && (Object.freeze(type.props), Object.freeze(type));
@@ -289,7 +289,7 @@ function requireReactJsxRuntime_development () {
 	            keys,
 	            children
 	          ),
-	          (didWarnAboutKeySpread[children + isStaticChildren] = true));
+	          (didWarnAboutKeySpread[children + isStaticChildren] = !0));
 	      }
 	      children = null;
 	      void 0 !== maybeKey &&
@@ -381,7 +381,7 @@ function requireReactJsxRuntime_development () {
 	        type,
 	        config,
 	        maybeKey,
-	        false,
+	        !1,
 	        trackActualOwner
 	          ? Error("react-stack-top-frame")
 	          : unknownOwnerDebugStack,
@@ -395,7 +395,7 @@ function requireReactJsxRuntime_development () {
 	        type,
 	        config,
 	        maybeKey,
-	        true,
+	        !0,
 	        trackActualOwner
 	          ? Error("react-stack-top-frame")
 	          : unknownOwnerDebugStack,
@@ -441,7 +441,7 @@ const Form = ({ onSubmit, submitLabel = "Send" }) => {
         if (onSubmit)
             onSubmit(values);
     };
-    return (jsxRuntimeExports.jsxs("form", { onSubmit: handleSubmit, className: "max-w-xl mx-auto p-6 bg-white rounded-lg shadow-md", children: [jsxRuntimeExports.jsxs("div", { className: "mb-4", children: [jsxRuntimeExports.jsx("label", { htmlFor: "name", className: "block text-sm font-medium text-gray-700 mb-1", children: "Name" }), jsxRuntimeExports.jsx("input", { id: "name", name: "name", value: values.name, onChange: handleChange, className: "w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400", placeholder: "Your name" })] }), jsxRuntimeExports.jsxs("div", { className: "mb-4", children: [jsxRuntimeExports.jsx("label", { htmlFor: "email", className: "block text-sm font-medium text-gray-700 mb-1", children: "Email" }), jsxRuntimeExports.jsx("input", { id: "email", name: "email", type: "email", value: values.email, onChange: handleChange, className: "w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400", placeholder: "you@example.com" })] }), jsxRuntimeExports.jsxs("div", { className: "mb-4", children: [jsxRuntimeExports.jsx("label", { htmlFor: "message", className: "block text-sm font-medium text-gray-700 mb-1", children: "Message" }), jsxRuntimeExports.jsx("textarea", { id: "message", name: "message", value: values.message, onChange: handleChange, rows: 4, className: "w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400", placeholder: "Write your message" })] }), jsxRuntimeExports.jsx("div", { className: "text-right", children: jsxRuntimeExports.jsx("button", { type: "submit", className: "inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400", children: submitLabel }) })] }));
+    return (jsxRuntimeExports.jsxs("form", { onSubmit: handleSubmit, className: "max-w-xl mx-auto p-6 bg-white rounded-lg shadow-md", children: [jsxRuntimeExports.jsx("div", { className: "mb-4" }), jsxRuntimeExports.jsxs("div", { className: "mb-4", children: [jsxRuntimeExports.jsx("label", { htmlFor: "email", className: "block text-sm font-medium text-gray-700 mb-1", children: "Email" }), jsxRuntimeExports.jsx("input", { id: "email", name: "email", type: "email", value: values.email, onChange: handleChange, className: "w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400", placeholder: "you@example.com" })] }), jsxRuntimeExports.jsxs("div", { className: "mb-4", children: [jsxRuntimeExports.jsx("label", { htmlFor: "message", className: "block text-sm font-medium text-gray-700 mb-1", children: "Message" }), jsxRuntimeExports.jsx("textarea", { id: "message", name: "message", value: values.message, onChange: handleChange, rows: 4, className: "w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400", placeholder: "Write your message" })] }), jsxRuntimeExports.jsx("div", { className: "text-right", children: jsxRuntimeExports.jsx("button", { type: "submit", className: "inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400", children: submitLabel }) })] }));
 };
 
 export { Form, Page };
