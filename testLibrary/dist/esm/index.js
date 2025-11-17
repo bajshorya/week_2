@@ -423,7 +423,7 @@ function requireJsxRuntime () {
 var jsxRuntimeExports = requireJsxRuntime();
 
 const Page = ({ title, children }) => {
-    return (jsxRuntimeExports.jsxs("div", { children: [jsxRuntimeExports.jsx("h1", { children: title }), children] }));
+    return (jsxRuntimeExports.jsxs("div", { "data-testid": "page-container", style: { backgroundColor: "#f5f5f5" }, children: [jsxRuntimeExports.jsx("h1", { children: title }), children] }));
 };
 
 const Form = ({ onSubmit, submitLabel = "Send" }) => {
