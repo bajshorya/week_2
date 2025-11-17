@@ -1,7 +1,22 @@
 {
-  "name": "testLibrary",
-  "version": "0.0.1",
-  "description": "Form Component Library ",
+  "name": "test-library-components-shorya",
+  "version": "0.0.3",
+  "description": "A React component library with form components",
+  "keywords": [
+    "react",
+    "components",
+    "ui",
+    "form",
+    "library"
+  ],
+  "homepage": "https://github.com/bajshorya/test-library#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bajshorya/TestPackage.git"
+  },
+  "bugs": {
+    "url": "https://github.com/bajshorya/TestPackage/issues"
+  },
   "license": "MIT",
   "author": "Shorya Baj",
   "type": "commonjs",
