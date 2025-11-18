@@ -3,11 +3,11 @@ import Form from "./components/page";
 
 const Formyx = () => {
   return (
-    <div>
+    <div className="formyx-form">
       Formyx Library
       <Form />
     </div>
   );
 };
 
-export default { Formyx, Form };
+export { Formyx, Form };
