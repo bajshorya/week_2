@@ -8,12 +8,14 @@
   "main": "./dist/index.js",
   "module": "./dist/index.esm.js",
   "types": "./dist/index.d.ts",
+  "styles": "./dist/formyx.css",
   "exports": {
     ".": {
       "import": "./dist/index.esm.js",
       "require": "./dist/index.js",
       "types": "./dist/index.d.ts"
-    }
+    },
+    "./style": "./dist/formyx.css"
   },
   "files": [
     "dist"

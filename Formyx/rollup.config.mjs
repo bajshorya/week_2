@@ -25,21 +25,26 @@ const mainConfig = {
     commonjs(),
     typescript({
       tsconfig: "./tsconfig.json",
-      exclude: ["**/*.test.ts", "**/*.test.tsx", "**/*.stories.tsx"],
+      exclude: [
+        "**/*.test.ts",
+        "**/*.test.tsx",
+        "**/*.stories.tsx",
+        "**/*.css",
+      ],
       declaration: false,
       declarationMap: false,
     }),
     postcss({
       extensions: [".css"],
-      inject: true,
-      extract: false,
+      inject: false,
+      extract: "formyx.css",
     }),
   ],
   external: ["react", "react-dom"],
 };
 
 const typesConfig = {
-  input: "src/index.tsx",
+  input: "src/types-entry.ts",
   output: {
     file: "dist/index.d.ts",
     format: "esm",
@@ -49,7 +54,7 @@ const typesConfig = {
       tsconfig: "./tsconfig.json",
     }),
   ],
-  external: ["react", "react-dom"],
+  external: ["react", "react-dom", "*.css"],
 };
 
 export default [mainConfig, typesConfig];
