@@ -425,13 +425,13 @@ function requireJsxRuntime () {
 var jsxRuntimeExports = requireJsxRuntime();
 
 const Form = () => {
-    return (jsxRuntimeExports.jsxs("div", { children: ["page", jsxRuntimeExports.jsx("div", { children: jsxRuntimeExports.jsx("h1", { children: "sedfs" }) })] }));
+    return (jsxRuntimeExports.jsx("div", { children: jsxRuntimeExports.jsxs("form", { className: "formyx-form", children: [jsxRuntimeExports.jsxs("div", { className: "formyx-field", children: [jsxRuntimeExports.jsx("label", { className: "formyx-label", children: "Test Field" }), jsxRuntimeExports.jsx("input", { type: "text", className: "formyx-input", placeholder: "Enter text" })] }), jsxRuntimeExports.jsx("button", { type: "submit", className: "formyx-submit-button", children: "Submit" })] }) }));
 };
 
 const Formyx = () => {
-    return (jsxRuntimeExports.jsxs("div", { children: ["Formyx Library", jsxRuntimeExports.jsx(Form, {})] }));
+    return (jsxRuntimeExports.jsxs("div", { className: "formyx-form", children: ["Formyx Library", jsxRuntimeExports.jsx(Form, {})] }));
 };
-var index = { Formyx, Form };
 
-module.exports = index;
+exports.Form = Form;
+exports.Formyx = Formyx;
 //# sourceMappingURL=index.js.map
