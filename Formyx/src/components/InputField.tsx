@@ -35,8 +35,7 @@ const InputField: React.FC<InputFieldProps> = ({
   options = [],
   multiple = false,
   required = false,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  validation,
+
   error,
   touched = false,
   onChange,

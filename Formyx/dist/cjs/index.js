@@ -460,9 +460,7 @@ const useThrottle = (fn, delay = 1000) => {
     }, [fn, delay]);
 };
 
-const InputField = ({ name, type = 'text', label, value, options = [], multiple = false, required = false, 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-validation, error, touched = false, onChange, onBlur, className = '', style, placeholder, disabled = false, readOnly = false, autoFocus = false, autoComplete, min, max, step, pattern, rows = 4, accept, debounce = 300, throttle = 300, validationStrategy = 'debounce', ...props }) => {
+const InputField = ({ name, type = 'text', label, value, options = [], multiple = false, required = false, error, touched = false, onChange, onBlur, className = '', style, placeholder, disabled = false, readOnly = false, autoFocus = false, autoComplete, min, max, step, pattern, rows = 4, accept, debounce = 300, throttle = 300, validationStrategy = 'debounce', ...props }) => {
     const debouncedValidation = useDebounce((name, value) => {
         onChange(name, value, true);
     }, debounce);
@@ -560,88 +558,290 @@ validation, error, touched = false, onChange, onBlur, className = '', style, pla
     return (jsxRuntimeExports.jsxs("div", { className: `formyx-field formyx-field-${type}`, children: [label && (jsxRuntimeExports.jsxs("label", { htmlFor: name, className: "formyx-label", children: [label, required && jsxRuntimeExports.jsx("span", { className: "formyx-required", children: "*" })] })), renderInput(), error && touched && jsxRuntimeExports.jsx("div", { className: "formyx-error-message", children: error })] }));
 };
 
+const emailValidator = (value) => {
+    if (!value) {
+        return { isValid: false, message: 'Email is required' };
+    }
+    const email = value;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        return { isValid: false, message: 'Please enter a valid email address' };
+    }
+    const commonTypos = [
+        /@gmai\.com$/,
+        /@gmial\.com$/,
+        /@yahhoo\.com$/,
+        /@hotmai\.com$/,
+        /@outloo\.com$/,
+    ];
+    for (const typo of commonTypos) {
+        if (typo.test(email)) {
+            return { isValid: false, message: 'Email domain might have a typo' };
+        }
+    }
+    return { isValid: true, message: '' };
+};
+const emailValidationRule = {
+    validate: emailValidator,
+    required: true,
+};
+
+const passwordValidator = (value) => {
+    if (!value) {
+        return 'Password is required';
+    }
+    const password = value;
+    if (password.length < 6) {
+        return 'Password must be at least 6 characters';
+    }
+    if (password.length > 100) {
+        return 'Password must be less than 100 characters';
+    }
+    return undefined;
+};
+const passwordValidationRule = {
+    validate: passwordValidator,
+    required: true,
+};
+
+const usernameValidator = (value) => {
+    if (!value) {
+        return 'Username is required';
+    }
+    const username = value;
+    if (username.length < 3) {
+        return 'Username must be at least 3 characters';
+    }
+    if (username.length > 20) {
+        return 'Username must be less than 20 characters';
+    }
+    if (!/^[a-zA-Z0-9_]+$/.test(username)) {
+        return 'Username can only contain letters, numbers, and underscores';
+    }
+    return undefined;
+};
+const usernameValidationRule = {
+    validate: usernameValidator,
+    required: true,
+};
+
+const requiredValidator = (value, formData, fieldName) => {
+    if (value === undefined || value === null || value === '') {
+        return `${fieldName || 'This field'} is required`;
+    }
+    if (typeof value === 'string' && value.trim() === '') {
+        return `${fieldName || 'This field'} is required`;
+    }
+    if (Array.isArray(value) && value.length === 0) {
+        return `${fieldName || 'This field'} is required`;
+    }
+    return undefined;
+};
+const createRequiredValidator = (customMessage) => {
+    return (value, formData, fieldName) => {
+        const result = requiredValidator(value, formData, fieldName);
+        if (result && customMessage) {
+            return customMessage;
+        }
+        return result;
+    };
+};
+
+const phoneValidator = (value) => {
+    if (!value) {
+        return { isValid: false, message: 'Phone number is required' };
+    }
+    const phone = value;
+    const phoneRegex = /^\+?[\d\s-()]{10,}$/;
+    if (!phoneRegex.test(phone)) {
+        return { isValid: false, message: 'Please enter a valid phone number' };
+    }
+    const digitsOnly = phone.replace(/\D/g, '');
+    if (digitsOnly.length < 10) {
+        return {
+            isValid: false,
+            message: 'Phone number must be at least 10 digits',
+        };
+    }
+    return { isValid: true, message: '' };
+};
+const phoneValidationRule = {
+    validate: phoneValidator,
+    required: true,
+    message: 'Please enter a valid phone number',
+};
+const urlValidator = (value) => {
+    if (!value) {
+        return { isValid: false, message: 'URL is required' };
+    }
+    const url = value;
+    try {
+        const urlRegex = /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/;
+        if (!urlRegex.test(url)) {
+            return { isValid: false, message: 'Please enter a valid URL' };
+        }
+        const testUrl = url.startsWith('http') ? url : `https://${url}`;
+        new URL(testUrl);
+        return { isValid: true, message: '' };
+    }
+    catch {
+        return { isValid: false, message: 'Please enter a valid URL' };
+    }
+};
+const urlValidationRule = {
+    validate: urlValidator,
+    required: false,
+    message: 'Please enter a valid URL',
+};
+const creditCardValidator = (value) => {
+    if (!value) {
+        return { isValid: false, message: 'Credit card number is required' };
+    }
+    const cardNumber = value.replace(/\s+/g, '');
+    const cardRegex = /^\d{13,19}$/;
+    if (!cardRegex.test(cardNumber)) {
+        return {
+            isValid: false,
+            message: 'Please enter a valid credit card number',
+        };
+    }
+    let sum = 0;
+    let isEven = false;
+    for (let i = cardNumber.length - 1; i >= 0; i--) {
+        let digit = parseInt(cardNumber.charAt(i), 10);
+        if (isEven) {
+            digit *= 2;
+            if (digit > 9) {
+                digit -= 9;
+            }
+        }
+        sum += digit;
+        isEven = !isEven;
+    }
+    if (sum % 10 !== 0) {
+        return {
+            isValid: false,
+            message: 'Please enter a valid credit card number',
+        };
+    }
+    return { isValid: true, message: '' };
+};
+const creditCardValidationRule = {
+    validate: creditCardValidator,
+    required: true,
+    message: 'Please enter a valid credit card number',
+};
+const ageValidator = (minAge = 18) => {
+    return (value) => {
+        if (!value) {
+            return { isValid: false, message: 'Age is required' };
+        }
+        const age = Number(value);
+        if (isNaN(age)) {
+            return { isValid: false, message: 'Please enter a valid age' };
+        }
+        if (age < minAge) {
+            return {
+                isValid: false,
+                message: `You must be at least ${minAge} years old`,
+            };
+        }
+        if (age > 120) {
+            return { isValid: false, message: 'Please enter a valid age' };
+        }
+        return { isValid: true, message: '' };
+    };
+};
+const createAgeValidationRule = (minAge = 18) => ({
+    validate: ageValidator(minAge),
+    required: true,
+    message: `You must be at least ${minAge} years old`,
+});
+
+const handleValidation = async (validator, value, formData, fieldName) => {
+    const result = validator(value, formData, fieldName);
+    if (result instanceof Promise) {
+        const awaitedResult = await result;
+        return normalizeValidationResult(awaitedResult);
+    }
+    return normalizeValidationResult(result);
+};
+const normalizeValidationResult = (result) => {
+    if (typeof result === 'string') {
+        return { isValid: false, message: result };
+    }
+    if (typeof result === 'boolean') {
+        return { isValid: result, message: result ? '' : 'Validation failed' };
+    }
+    if (result === undefined) {
+        return { isValid: true, message: '' };
+    }
+    return result;
+};
+
 const Form = () => {
     const [formData, setFormData] = require$$0.useState({
         username: '',
         email: '',
         password: '',
-        age: '',
         bio: '',
-        country: '',
-        subscribe: false,
-        gender: '',
         avatar: null,
         search: '',
-        priceRange: 50,
-        rating: 3,
+        phone: '',
+        website: '',
+        creditCard: '',
+        age: '',
     });
     const [touched, setTouched] = require$$0.useState({});
     const [errors, setErrors] = require$$0.useState({});
-    const validateEmailField = require$$0.useCallback((email) => {
-        let error = '';
-        if (!email) {
-            error = 'Email is required';
+    const throttledSearch = useThrottle((query) => {
+        if (query.length > 2) {
+            console.log('Searching for:', query);
         }
-        else if (!/\S+@\S+\.\S+/.test(email)) {
-            error = 'Email format is invalid (example: user@example.com)';
-        }
-        setErrors((prev) => ({
-            ...prev,
-            email: error,
-        }));
-    }, []);
-    const debouncedEmailValidation = useDebounce((email) => {
-        validateEmailField(email);
-    }, 500);
-    const throttledPriceTracking = useThrottle((price) => {
-    }, 200);
+    }, 300);
     const debouncedBioValidation = useDebounce((bio) => {
-        if (bio.length > 0) {
-            let error = '';
-            if (bio.length < 10) {
-                error = 'Bio should be at least 10 characters';
-            }
-            else if (bio.length > 500) {
-                error = 'Bio should be less than 500 characters';
-            }
-            setErrors((prev) => ({ ...prev, bio: error }));
-        }
-    }, 400);
-    const throttledUsernameCheck = useThrottle((username) => {
-        const takenUsernames = ['admin', 'user', 'test'];
-        if (takenUsernames.includes(username.toLowerCase())) {
+        if (bio && bio.length > 500) {
             setErrors((prev) => ({
                 ...prev,
-                username: 'Username is already taken',
+                bio: 'Bio must be less than 500 characters',
             }));
         }
-    }, 800);
+        else {
+            setErrors((prev) => ({ ...prev, bio: '' }));
+        }
+    }, 400);
+    const createValidatorWrapper = (validator) => {
+        return async (value, formData) => {
+            const result = await handleValidation(validator, value, formData);
+            return result.isValid ? undefined : result.message;
+        };
+    };
+    const fileValidator = async (value) => {
+        if (!value) {
+            return { isValid: true, message: '' };
+        }
+        if (value instanceof FileList) {
+            const file = value[0];
+            if (file) {
+                if (!file.type.startsWith('image/')) {
+                    return { isValid: false, message: 'Please upload an image file' };
+                }
+                if (file.size > 2 * 1024 * 1024) {
+                    return { isValid: false, message: 'File size must be less than 2MB' };
+                }
+            }
+        }
+        return { isValid: true, message: '' };
+    };
     const handleChange = (name, value, shouldValidate = true) => {
         setFormData((prev) => ({
             ...prev,
             [name]: value,
         }));
         switch (name) {
-            case 'email':
+            case 'search':
                 if (typeof value === 'string') {
-                    if (shouldValidate) {
-                        let immediateError = '';
-                        if (!value) {
-                            immediateError = 'Email is required';
-                        }
-                        setErrors((prev) => ({ ...prev, email: immediateError }));
-                    }
-                    if (value) {
-                        debouncedEmailValidation(value);
-                    }
-                    else {
-                        setErrors((prev) => ({ ...prev, email: '' }));
-                    }
-                }
-                break;
-            case 'priceRange':
-                if (typeof value === 'number') {
-                    throttledPriceTracking(value);
+                    throttledSearch(value);
                 }
                 break;
             case 'bio':
@@ -649,9 +849,9 @@ const Form = () => {
                     debouncedBioValidation(value);
                 }
                 break;
-            case 'username':
-                if (typeof value === 'string' && value.length > 2) {
-                    throttledUsernameCheck(value);
+            case 'avatar':
+                if (shouldValidate) {
+                    validateField(name, value);
                 }
                 break;
             default:
@@ -661,103 +861,165 @@ const Form = () => {
                 break;
         }
     };
-    const handleBlur = (name, isTouched = true) => {
-        if (isTouched) {
-            setTouched((prev) => ({
-                ...prev,
-                [name]: true,
-            }));
-            if (name === 'email') {
-                validateEmailField(formData.email);
-            }
-            else {
-                validateField(name, formData[name]);
+    const handleBlur = (name) => {
+        setTouched((prev) => ({
+            ...prev,
+            [name]: true,
+        }));
+        validateField(name, formData[name]);
+    };
+    const validateField = async (name, value) => {
+        let error = '';
+        try {
+            switch (name) {
+                case 'username':
+                    if (value) {
+                        const result = await handleValidation(usernameValidationRule.validate, value, formData, name);
+                        if (!result.isValid) {
+                            error = result.message;
+                        }
+                    }
+                    else {
+                        const requiredResult = await handleValidation(requiredValidator, value, formData, 'Username');
+                        if (!requiredResult.isValid) {
+                            error = requiredResult.message;
+                        }
+                    }
+                    break;
+                case 'email':
+                    if (value) {
+                        const result = await handleValidation(emailValidationRule.validate, value, formData, name);
+                        if (!result.isValid) {
+                            error = result.message;
+                        }
+                    }
+                    else {
+                        const requiredResult = await handleValidation(requiredValidator, value, formData, 'Email');
+                        if (!requiredResult.isValid) {
+                            error = requiredResult.message;
+                        }
+                    }
+                    break;
+                case 'password':
+                    if (value) {
+                        const result = await handleValidation(passwordValidationRule.validate, value, formData, name);
+                        if (!result.isValid) {
+                            error = result.message;
+                        }
+                    }
+                    else {
+                        const requiredResult = await handleValidation(requiredValidator, value, formData, 'Password');
+                        if (!requiredResult.isValid) {
+                            error = requiredResult.message;
+                        }
+                    }
+                    break;
+                case 'phone':
+                    if (value) {
+                        const result = await handleValidation(phoneValidationRule.validate, value, formData, name);
+                        if (!result.isValid) {
+                            error = result.message;
+                        }
+                    }
+                    break;
+                case 'website':
+                    if (value) {
+                        const result = await handleValidation(urlValidationRule.validate, value, formData, name);
+                        if (!result.isValid) {
+                            error = result.message;
+                        }
+                    }
+                    break;
+                case 'creditCard':
+                    if (value) {
+                        const result = await handleValidation(creditCardValidationRule.validate, value, formData, name);
+                        if (!result.isValid) {
+                            error = result.message;
+                        }
+                    }
+                    else {
+                        const requiredResult = await handleValidation(requiredValidator, value, formData, 'Credit card');
+                        if (!requiredResult.isValid) {
+                            error = requiredResult.message;
+                        }
+                    }
+                    break;
+                case 'age':
+                    if (value) {
+                        const ageValidator = createAgeValidationRule(18).validate;
+                        const result = await handleValidation(ageValidator, value, formData, name);
+                        if (!result.isValid) {
+                            error = result.message;
+                        }
+                    }
+                    else {
+                        const requiredResult = await handleValidation(requiredValidator, value, formData, 'Age');
+                        if (!requiredResult.isValid) {
+                            error = requiredResult.message;
+                        }
+                    }
+                    break;
+                case 'avatar': {
+                    const fileResult = await fileValidator(value);
+                    if (typeof fileResult === 'object' && !fileResult.isValid) {
+                        error = fileResult.message;
+                    }
+                    break;
+                }
+                default:
+                    break;
             }
         }
-    };
-    const validateField = (name, value) => {
-        let error = '';
-        switch (name) {
-            case 'username':
-                if (!value) {
-                    error = 'Username is required';
-                }
-                else if (value.length < 3) {
-                    error = 'Username must be at least 3 characters';
-                }
-                break;
-            case 'password':
-                if (!value) {
-                    error = 'Password is required';
-                }
-                else if (value.length < 6) {
-                    error = 'Password must be at least 6 characters';
-                }
-                break;
-            case 'age':
-                if (value && (Number(value) < 18 || Number(value) > 100)) {
-                    error = 'Age must be between 18 and 100';
-                }
-                break;
-            case 'country':
-                if (!value) {
-                    error = 'Please select a country';
-                }
-                break;
-            case 'rating':
-                if (!value) {
-                    error = 'Please select a rating';
-                }
-                break;
+        catch (err) {
+            console.error(err);
+            error = 'Validation failed';
         }
         setErrors((prev) => ({
             ...prev,
             [name]: error,
         }));
     };
-    const debouncedSubmit = useDebounce((data) => {
-        validateEmailField(data.email);
-        const hasErrors = Object.values(errors).some((error) => error);
-        if (!hasErrors) {
-            alert('Form submitted successfully!');
-        }
-    }, 300);
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         const allTouched = Object.keys(formData).reduce((acc, key) => {
             acc[key] = true;
             return acc;
         }, {});
         setTouched(allTouched);
-        Object.keys(formData).forEach((key) => {
-            if (key === 'email') {
-                validateEmailField(formData.email);
-            }
-            else {
-                validateField(key, formData[key]);
-            }
+        const validationPromises = Object.keys(formData).map(async (key) => {
+            await validateField(key, formData[key]);
         });
-        debouncedSubmit(formData);
+        await Promise.all(validationPromises);
+        const hasErrors = Object.values(errors).some((error) => error);
+        if (!hasErrors) {
+            alert('Form submitted successfully!');
+        }
+        else {
+            alert('Please fix the errors before submitting.');
+        }
     };
-    const countryOptions = [
-        { label: 'United States', value: 'us' },
-        { label: 'Canada', value: 'ca' },
-        { label: 'United Kingdom', value: 'uk' },
-        { label: 'Australia', value: 'au' },
-    ];
-    const genderOptions = [
-        { label: 'Male', value: 'male' },
-        { label: 'Female', value: 'female' },
-        { label: 'Other', value: 'other' },
-    ];
-    const ratingOptions = [
-        { label: '⭐', value: '1' },
-        { label: '⭐⭐', value: '2' },
-        { label: '⭐⭐⭐', value: '3' },
-        { label: '⭐⭐⭐⭐', value: '4' },
-        { label: '⭐⭐⭐⭐⭐', value: '5' },
-    ];
-    return (jsxRuntimeExports.jsxs("div", { className: "formyx-form", children: [jsxRuntimeExports.jsx("h2", { children: "Formyx Demo Form" }), jsxRuntimeExports.jsxs("form", { onSubmit: handleSubmit, children: [jsxRuntimeExports.jsx(InputField, { name: "username", type: "text", label: "Username", value: formData.username, onChange: handleChange, onBlur: handleBlur, error: errors.username, touched: touched.username, required: true, placeholder: "Choose a username", throttle: 800, validationStrategy: "throttle" }), jsxRuntimeExports.jsx(InputField, { name: "email", type: "email", label: "Email Address", value: formData.email, onChange: handleChange, onBlur: handleBlur, error: errors.email, touched: touched.email, required: true, placeholder: "your.email@example.com", debounce: 500, validationStrategy: "debounce" }), jsxRuntimeExports.jsx(InputField, { name: "password", type: "password", label: "Password", value: formData.password, onChange: handleChange, onBlur: handleBlur, error: errors.password, touched: touched.password, required: true, placeholder: "Enter your password", validationStrategy: "immediate" }), jsxRuntimeExports.jsx(InputField, { name: "search", type: "text", label: "Search Products", value: formData.search, onChange: handleChange, onBlur: handleBlur, placeholder: "Type to search...", throttle: 300, validationStrategy: "throttle" }), jsxRuntimeExports.jsx(InputField, { name: "age", type: "number", label: "Age", value: formData.age, onChange: handleChange, onBlur: handleBlur, error: errors.age, touched: touched.age, placeholder: "Enter your age", min: "18", max: "100" }), jsxRuntimeExports.jsx(InputField, { name: "bio", type: "textarea", label: "Bio", value: formData.bio, onChange: handleChange, onBlur: handleBlur, error: errors.bio, touched: touched.bio, placeholder: "Tell us about yourself...", rows: 3, debounce: 400, validationStrategy: "debounce" }), jsxRuntimeExports.jsx(InputField, { name: "rating", type: "radio", label: "How would you rate our service?", value: formData.rating, onChange: handleChange, onBlur: handleBlur, error: errors.rating, touched: touched.rating, options: ratingOptions, throttle: 500, validationStrategy: "throttle" }), jsxRuntimeExports.jsx(InputField, { name: "country", type: "select", label: "Country", value: formData.country, onChange: handleChange, onBlur: handleBlur, error: errors.country, touched: touched.country, options: countryOptions, required: true }), jsxRuntimeExports.jsx(InputField, { name: "gender", type: "radio", label: "Gender", value: formData.gender, onChange: handleChange, onBlur: handleBlur, options: genderOptions }), jsxRuntimeExports.jsx(InputField, { name: "subscribe", type: "checkbox", label: "Subscribe to newsletter", value: formData.subscribe, onChange: handleChange, onBlur: handleBlur }), jsxRuntimeExports.jsx(InputField, { name: "avatar", type: "file", label: "Profile Picture", value: formData.avatar, onChange: handleChange, onBlur: handleBlur, accept: "image/*" }), jsxRuntimeExports.jsx("button", { type: "submit", className: "formyx-submit-button", children: "Submit Form" })] })] }));
+    return (jsxRuntimeExports.jsxs("div", { className: "formyx-form", children: [jsxRuntimeExports.jsx("h2", { children: "Formyx Demo - Modular Validators & Performance Hooks" }), jsxRuntimeExports.jsxs("form", { onSubmit: handleSubmit, children: [jsxRuntimeExports.jsx(InputField, { name: "username", type: "text", label: "Username", value: formData.username, onChange: handleChange, onBlur: handleBlur, error: errors.username, touched: touched.username, validation: {
+                            validate: createValidatorWrapper(usernameValidationRule.validate),
+                            required: true,
+                        }, placeholder: "Choose a username", throttle: 800, validationStrategy: "throttle" }), jsxRuntimeExports.jsx(InputField, { name: "email", type: "email", label: "Email Address", value: formData.email, onChange: handleChange, onBlur: handleBlur, error: errors.email, touched: touched.email, validation: {
+                            validate: createValidatorWrapper(emailValidationRule.validate),
+                            required: true,
+                        }, placeholder: "your.email@example.com", debounce: 500, validationStrategy: "debounce" }), jsxRuntimeExports.jsx(InputField, { name: "password", type: "password", label: "Password", value: formData.password, onChange: handleChange, onBlur: handleBlur, error: errors.password, touched: touched.password, validation: {
+                            validate: createValidatorWrapper(passwordValidationRule.validate),
+                            required: true,
+                        }, placeholder: "Enter your password", validationStrategy: "immediate" }), jsxRuntimeExports.jsx(InputField, { name: "phone", type: "tel", label: "Phone Number", value: formData.phone, onChange: handleChange, onBlur: handleBlur, error: errors.phone, touched: touched.phone, validation: {
+                            validate: createValidatorWrapper(phoneValidationRule.validate),
+                            required: false,
+                        }, placeholder: "+1 (555) 123-4567", debounce: 400, validationStrategy: "debounce" }), jsxRuntimeExports.jsx(InputField, { name: "website", type: "url", label: "Website", value: formData.website, onChange: handleChange, onBlur: handleBlur, error: errors.website, touched: touched.website, validation: {
+                            validate: createValidatorWrapper(urlValidationRule.validate),
+                            required: false,
+                        }, placeholder: "https://example.com", debounce: 500, validationStrategy: "debounce" }), jsxRuntimeExports.jsx(InputField, { name: "creditCard", type: "text", label: "Credit Card", value: formData.creditCard, onChange: handleChange, onBlur: handleBlur, error: errors.creditCard, touched: touched.creditCard, validation: {
+                            validate: createValidatorWrapper(creditCardValidationRule.validate),
+                            required: true,
+                        }, placeholder: "1234 5678 9012 3456", throttle: 600, validationStrategy: "throttle" }), jsxRuntimeExports.jsx(InputField, { name: "age", type: "number", label: "Age", value: formData.age, onChange: handleChange, onBlur: handleBlur, error: errors.age, touched: touched.age, validation: {
+                            validate: createValidatorWrapper(createAgeValidationRule(18).validate),
+                            required: true,
+                        }, placeholder: "Enter your age", validationStrategy: "immediate" }), jsxRuntimeExports.jsx(InputField, { name: "search", type: "text", label: "Product Search", value: formData.search, onChange: handleChange, onBlur: handleBlur, error: errors.search, touched: touched.search, placeholder: "Type to search products...", throttle: 300, validationStrategy: "throttle" }), jsxRuntimeExports.jsx(InputField, { name: "bio", type: "textarea", label: "Bio", value: formData.bio, onChange: handleChange, onBlur: handleBlur, error: errors.bio, touched: touched.bio, placeholder: "Tell us about yourself...", rows: 3, debounce: 400, validationStrategy: "debounce" }), jsxRuntimeExports.jsx(InputField, { name: "avatar", type: "file", label: "Profile Picture", value: formData.avatar, onChange: handleChange, onBlur: handleBlur, error: errors.avatar, touched: touched.avatar, validation: { validate: createValidatorWrapper(fileValidator) }, accept: "image/*" }), jsxRuntimeExports.jsx("button", { type: "submit", className: "formyx-submit-button", children: "Submit Form" })] })] }));
 };
 
 const Formyx = () => {
@@ -767,6 +1029,23 @@ const Formyx = () => {
 exports.Form = Form;
 exports.Formyx = Formyx;
 exports.InputField = InputField;
+exports.ageValidator = ageValidator;
+exports.createAgeValidationRule = createAgeValidationRule;
+exports.createRequiredValidator = createRequiredValidator;
+exports.creditCardValidationRule = creditCardValidationRule;
+exports.creditCardValidator = creditCardValidator;
+exports.emailValidationRule = emailValidationRule;
+exports.emailValidator = emailValidator;
+exports.handleValidation = handleValidation;
+exports.passwordValidationRule = passwordValidationRule;
+exports.passwordValidator = passwordValidator;
+exports.phoneValidationRule = phoneValidationRule;
+exports.phoneValidator = phoneValidator;
+exports.requiredValidator = requiredValidator;
+exports.urlValidationRule = urlValidationRule;
+exports.urlValidator = urlValidator;
 exports.useDebounce = useDebounce;
 exports.useThrottle = useThrottle;
+exports.usernameValidationRule = usernameValidationRule;
+exports.usernameValidator = usernameValidator;
 //# sourceMappingURL=index.js.map

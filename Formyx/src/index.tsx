@@ -3,6 +3,25 @@ import Form from './components/page';
 import InputField from './components/InputField';
 import { useDebounce, useThrottle } from './hooks';
 import './styles/formyx.css';
+import type {
+  phoneValidator,
+  phoneValidationRule,
+  urlValidator,
+  urlValidationRule,
+  creditCardValidator,
+  creditCardValidationRule,
+  ageValidator,
+  createAgeValidationRule,
+  emailValidator,
+  emailValidationRule,
+  passwordValidator,
+  passwordValidationRule,
+  usernameValidator,
+  usernameValidationRule,
+  requiredValidator,
+  createRequiredValidator,
+} from './validators';
+export * from './validators';
 
 const Formyx = () => {
   return (
@@ -27,3 +46,22 @@ export type {
   FormConfig,
   InputFieldProps,
 } from './types';
+
+export type {
+  urlValidationRule,
+  urlValidator,
+  phoneValidationRule,
+  phoneValidator,
+  creditCardValidationRule,
+  creditCardValidator,
+  ageValidator,
+  createAgeValidationRule,
+  emailValidator,
+  emailValidationRule,
+  passwordValidator,
+  passwordValidationRule,
+  usernameValidator,
+  usernameValidationRule,
+  requiredValidator,
+  createRequiredValidator,
+};
