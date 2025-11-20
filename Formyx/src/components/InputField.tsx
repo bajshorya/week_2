@@ -1,5 +1,6 @@
 import React from "react";
 import type { FieldValue, ValidatedFieldConfig, FormData } from "../types";
+import { useDebounce, useThrottle } from "../hooks";
 
 interface InputFieldProps extends Omit<ValidatedFieldConfig, "validate"> {
   value: FieldValue;
@@ -10,6 +11,20 @@ interface InputFieldProps extends Omit<ValidatedFieldConfig, "validate"> {
   formData?: FormData;
   className?: string;
   style?: React.CSSProperties;
+  placeholder?: string;
+  disabled?: boolean;
+  readOnly?: boolean;
+  autoFocus?: boolean;
+  autoComplete?: string;
+  min?: number | string;
+  max?: number | string;
+  step?: number | string;
+  pattern?: string;
+  rows?: number;
+  accept?: string;
+  debounce?: number;
+  throttle?: number;
+  validationStrategy?: "debounce" | "throttle" | "immediate";
 }
 
 const InputField: React.FC<InputFieldProps> = ({
@@ -20,6 +35,7 @@ const InputField: React.FC<InputFieldProps> = ({
   options = [],
   multiple = false,
   required = false,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   validation,
   error,
   touched = false,
@@ -27,8 +43,30 @@ const InputField: React.FC<InputFieldProps> = ({
   onBlur,
   className = "",
   style,
+  placeholder,
+  disabled = false,
+  readOnly = false,
+  autoFocus = false,
+  autoComplete,
+  min,
+  max,
+  step,
+  pattern,
+  rows = 4,
+  accept,
+  debounce = 300,
+  throttle = 300,
+  validationStrategy = "debounce",
   ...props
 }) => {
+  const debouncedValidation = useDebounce((name: string, value: FieldValue) => {
+    onChange(name, value, true);
+  }, debounce);
+
+  const throttledValidation = useThrottle((name: string, value: FieldValue) => {
+    onChange(name, value, true);
+  }, throttle);
+
   const handleChange = (
     event: React.ChangeEvent<
       HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
@@ -60,11 +98,28 @@ const InputField: React.FC<InputFieldProps> = ({
         newValue = event.target.value;
     }
 
-    onChange(name, newValue, true);
+    onChange(name, newValue, false);
+
+    if (type !== "checkbox" && type !== "radio" && type !== "file") {
+      switch (validationStrategy) {
+        case "debounce":
+          debouncedValidation(name, newValue);
+          break;
+        case "throttle":
+          throttledValidation(name, newValue);
+          break;
+        case "immediate":
+          onChange(name, newValue, true);
+          break;
+      }
+    } else {
+      onChange(name, newValue, true);
+    }
   };
 
   const handleBlur = () => {
     onBlur(name, true);
+    onChange(name, value, true);
   };
 
   const getInputClassName = () => {
@@ -73,7 +128,6 @@ const InputField: React.FC<InputFieldProps> = ({
     return `${baseClass} ${stateClass} ${className}`.trim();
   };
 
-  // Render different input types
   const renderInput = () => {
     const commonProps = {
       name,
@@ -84,12 +138,24 @@ const InputField: React.FC<InputFieldProps> = ({
       className: getInputClassName(),
       style,
       required,
+      placeholder,
+      disabled,
+      readOnly,
+      autoFocus,
+      autoComplete,
+      min,
+      max,
+      step,
+      pattern,
+      accept,
       ...props,
     };
 
     switch (type) {
       case "textarea":
-        return <textarea {...commonProps} value={value as string} rows={4} />;
+        return (
+          <textarea {...commonProps} value={value as string} rows={rows} />
+        );
 
       case "select":
         return (
@@ -122,6 +188,7 @@ const InputField: React.FC<InputFieldProps> = ({
                   onBlur={handleBlur}
                   className={getInputClassName()}
                   required={required}
+                  disabled={disabled}
                 />
                 <span>{option.label}</span>
               </label>
@@ -136,6 +203,7 @@ const InputField: React.FC<InputFieldProps> = ({
             type="file"
             multiple={multiple}
             value={undefined}
+            accept={accept}
           />
         );
 

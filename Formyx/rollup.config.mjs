@@ -4,6 +4,32 @@ import commonjs from "@rollup/plugin-commonjs";
 import dts from "rollup-plugin-dts";
 import postcss from "rollup-plugin-postcss";
 
+const cssConfig = {
+  input: "src/styles/formyx.css",
+  output: {
+    file: "dist/formyx.css",
+  },
+  plugins: [
+    postcss({
+      minimize: true,
+      extract: true,
+    }),
+  ],
+};
+
+const allStylesConfig = {
+  input: "src/styles/index.css",
+  output: {
+    file: "dist/all.css",
+  },
+  plugins: [
+    postcss({
+      minimize: true,
+      extract: true,
+    }),
+  ],
+};
+
 const mainConfig = {
   input: "src/index.tsx",
   output: [
@@ -11,11 +37,13 @@ const mainConfig = {
       file: "dist/cjs/index.js",
       format: "cjs",
       sourcemap: true,
+      exports: "named",
     },
     {
       file: "dist/esm/index.esm.js",
       format: "esm",
       sourcemap: true,
+      exports: "named",
     },
   ],
   plugins: [
@@ -25,19 +53,15 @@ const mainConfig = {
     commonjs(),
     typescript({
       tsconfig: "./tsconfig.json",
-      exclude: [
-        "**/*.test.ts",
-        "**/*.test.tsx",
-        "**/*.stories.tsx",
-        "**/*.css",
-      ],
+      exclude: ["**/*.css"],
       declaration: false,
       declarationMap: false,
     }),
     postcss({
+      minimize: true,
       extensions: [".css"],
       inject: false,
-      extract: "formyx.css",
+      extract: false,
     }),
   ],
   external: ["react", "react-dom"],
@@ -57,4 +81,5 @@ const typesConfig = {
   external: ["react", "react-dom", "*.css"],
 };
 
-export default [mainConfig, typesConfig];
+// Only export core and all styles configs
+export default [cssConfig, allStylesConfig, mainConfig, typesConfig];

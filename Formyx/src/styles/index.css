@@ -1,0 +1,446 @@
+
+.formyx-field {
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.formyx-field-checkbox {
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.formyx-field-radio {
+  margin-bottom: 0.5rem;
+}
+
+.formyx-radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.formyx-radio-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
+.formyx-label {
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+  color: #333;
+  font-size: 0.875rem;
+}
+
+.formyx-required {
+  color: #e74c3c;
+  margin-left: 0.25rem;
+}
+
+.formyx-input {
+  padding: 8px 12px;
+  border: 2px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  font-family: inherit;
+  transition: border-color 0.2s ease;
+}
+
+.formyx-input:focus {
+  border-color: #3498db;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+}
+
+.formyx-input-error {
+  border-color: #e74c3c;
+  background-color: #fdf2f2;
+}
+
+.formyx-input-error:focus {
+  border-color: #e74c3c;
+  box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
+}
+
+.formyx-error-message {
+  color: #e74c3c;
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
+  font-weight: 500;
+}
+
+.formyx-form {
+  width: 100%;
+}
+
+.formyx-submit-button {
+  background-color: #3498db;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.formyx-submit-button:hover:not(:disabled) {
+  background-color: #2980b9;
+}
+
+.formyx-submit-button:disabled {
+  background-color: #bdc3c7;
+  cursor: not-allowed;
+}
+
+.formyx-input[type="checkbox"],
+.formyx-input[type="radio"] {
+  width: auto;
+  margin: 0;
+}
+
+.formyx-input[type="file"] {
+  padding: 6px;
+  background-color: #f8f9fa;
+}
+
+textarea.formyx-input {
+  min-height: 80px;
+  resize: vertical;
+}
+
+select.formyx-input {
+  background-color: white;
+  cursor: pointer;
+}
+
+.formyx-input[type="range"] {
+  padding: 0;
+  height: 6px;
+  background: #ddd;
+  border-radius: 3px;
+  outline: none;
+}
+
+.formyx-input[type="range"]::-webkit-slider-thumb {
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #3498db;
+  cursor: pointer;
+}
+
+.formyx-input[type="range"]::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #3498db;
+  cursor: pointer;
+  border: none;
+}
+
+:root {
+  --formyx-primary: #3b82f6;
+  --formyx-secondary: #6b7280;
+  --formyx-success: #10b981;
+  --formyx-error: #ef4444;
+  --formyx-warning: #f59e0b;
+
+  --formyx-border-radius: 8px;
+  --formyx-border-width: 2px;
+  --formyx-padding: 12px 16px;
+  --formyx-font-size: 16px;
+}
+
+.formyx-modern .formyx-input {
+  border-radius: var(--formyx-border-radius);
+  border: var(--formyx-border-width) solid #e5e7eb;
+  padding: var(--formyx-padding);
+  font-size: var(--formyx-font-size);
+  transition: all 0.3s ease;
+  background: white;
+}
+
+.formyx-modern .formyx-input:focus {
+  border-color: var(--formyx-primary);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  outline: none;
+}
+
+.formyx-modern .formyx-label {
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.formyx-modern .formyx-submit-button {
+  background: var(--formyx-primary);
+  color: white;
+  border: none;
+  border-radius: var(--formyx-border-radius);
+  padding: var(--formyx-padding);
+  font-size: var(--formyx-font-size);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.formyx-modern .formyx-submit-button:hover {
+  background: #2563eb;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.formyx-dark .formyx-input {
+  background: #1f2937;
+  border: 2px solid #374151;
+  color: #f9fafb;
+  border-radius: 6px;
+  padding: 12px 16px;
+}
+
+.formyx-dark .formyx-input:focus {
+  border-color: var(--formyx-primary);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+.formyx-dark .formyx-label {
+  color: #d1d5db;
+}
+
+.formyx-dark .formyx-submit-button {
+  background: var(--formyx-primary);
+  color: white;
+}
+
+.formyx-minimal .formyx-input {
+  border: none;
+  border-bottom: 2px solid #e5e7eb;
+  border-radius: 0;
+  padding: 12px 0;
+  background: transparent;
+}
+
+.formyx-minimal .formyx-input:focus {
+  border-bottom-color: var(--formyx-primary);
+  box-shadow: none;
+}
+
+.formyx-rounded .formyx-input {
+  border-radius: 25px;
+  padding: 14px 20px;
+}
+
+.formyx-rounded .formyx-submit-button {
+  border-radius: 25px;
+}
+
+
+.formyx-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.formyx-grid-3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px;
+}
+
+.formyx-inline {
+  display: flex;
+  gap: 16px;
+  align-items: end;
+}
+
+.formyx-inline .formyx-field {
+  margin-bottom: 0;
+  flex: 1;
+}
+
+.formyx-spacing-sm .formyx-field {
+  margin-bottom: 12px;
+}
+
+.formyx-spacing-md .formyx-field {
+  margin-bottom: 20px;
+}
+
+.formyx-spacing-lg .formyx-field {
+  margin-bottom: 28px;
+}
+
+.formyx-spacing-none .formyx-field {
+  margin-bottom: 0;
+}
+
+.formyx-width-full {
+  width: 100%;
+}
+
+.formyx-width-auto {
+  width: auto;
+}
+
+.formyx-width-1\/2 {
+  width: 50%;
+}
+
+.formyx-width-1\/3 {
+  width: 33.333%;
+}
+
+.formyx-width-1\/4 {
+  width: 25%;
+}
+
+
+.formyx-input-sm {
+  padding: 8px 12px !important;
+  font-size: 14px !important;
+}
+
+.formyx-input-lg {
+  padding: 16px 20px !important;
+  font-size: 18px !important;
+}
+
+.formyx-input-outline {
+  border: 2px solid #e5e7eb !important;
+  background: white !important;
+}
+
+.formyx-input-filled {
+  background: #f8fafc !important;
+  border: 2px solid transparent !important;
+}
+
+.formyx-input-filled:focus {
+  background: white !important;
+  border-color: var(--formyx-primary) !important;
+}
+
+.formyx-input-underline {
+  border: none !important;
+  border-bottom: 2px solid #e5e7eb !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+.formyx-primary .formyx-input:focus {
+  border-color: #3b82f6 !important;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1) !important;
+}
+
+.formyx-success .formyx-input:focus {
+  border-color: #10b981 !important;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1) !important;
+}
+
+.formyx-warning .formyx-input:focus {
+  border-color: #f59e0b !important;
+  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1) !important;
+}
+
+.formyx-danger .formyx-input:focus {
+  border-color: #ef4444 !important;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1) !important;
+}
+
+
+.formyx-animate .formyx-input {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.formyx-animate .formyx-label {
+  transition: all 0.3s ease;
+}
+
+.formyx-animate .formyx-submit-button {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.formyx-floating {
+  position: relative;
+}
+
+.formyx-floating .formyx-label {
+  position: absolute;
+  top: 50%;
+  left: 16px;
+  transform: translateY(-50%);
+  background: white;
+  padding: 0 4px;
+  transition: all 0.3s ease;
+  pointer-events: none;
+  color: #6b7280;
+}
+
+.formyx-floating .formyx-input:focus + .formyx-label,
+.formyx-floating .formyx-input:not(:placeholder-shown) + .formyx-label {
+  top: 0;
+  font-size: 12px;
+  color: var(--formyx-primary);
+  font-weight: 600;
+}
+
+.formyx-floating .formyx-input {
+  padding-top: 20px;
+  padding-bottom: 12px;
+}
+
+.formyx-loading .formyx-input {
+  background-image: linear-gradient(
+    90deg,
+    #f0f0f0 25%,
+    #e0e0e0 50%,
+    #f0f0f0 75%
+  );
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.formyx-input-success {
+  border-color: var(--formyx-success) !important;
+  background-color: rgba(16, 185, 129, 0.05) !important;
+}
+
+.formyx-input-success:focus {
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1) !important;
+}
+
+.formyx-input-error {
+  border-color: var(--formyx-error) !important;
+  background-color: rgba(239, 68, 68, 0.05) !important;
+  animation: shake 0.5s ease-in-out;
+}
+
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  75% {
+    transform: translateX(5px);
+  }
+}

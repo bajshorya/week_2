@@ -1,30 +1,63 @@
 {
-  "name": "formyx",
-  "version": "0.0.1",
-  "description": "A form validation app",
+  "name": "@shoryabaj/formyx",
+  "version": "0.1.2",
+  "description": "A form validation Library for React built with TypeScript.",
   "license": "MIT",
   "author": "Shorya Baj",
   "type": "module",
-  "main": "./dist/index.js",
-  "module": "./dist/index.esm.js",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.esm.js",
   "types": "./dist/index.d.ts",
-  "styles": "./dist/formyx.css",
+  "style": "./dist/formyx.css",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bajshorya/Formyx.git"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "homepage": "https://github.com/bajshorya/Formyx.git",
   "exports": {
     ".": {
-      "import": "./dist/index.esm.js",
-      "require": "./dist/index.js",
-      "types": "./dist/index.d.ts"
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/esm/index.esm.js"
+      },
+      "require": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/cjs/index.js"
+      }
     },
-    "./style": "./dist/formyx.css"
+    "./style": "./dist/formyx.css",
+    "./style.css": "./dist/formyx.css",
+    "./formyx.css": "./dist/formyx.css",
+    "./all": "./dist/all.css",
+    "./all.css": "./dist/all.css",
+    "./dist/*": "./dist/*"
   },
   "files": [
     "dist"
   ],
   "scripts": {
     "build": "rollup --config",
-    "dev": "rollup --config --watch"
+    "dev": "rollup --config --watch",
+    "prepare": "husky",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
+    "lint:watch": "eslint . --ext .js,.jsx,.ts,.tsx --watch"
+  },
+  "lint-staged": {
+    "**/*.{js,jsx,ts,tsx}": [
+      "eslint --fix",
+      "git add"
+    ],
+    "**/*.{json,md,css,scss}": [
+      "prettier --write",
+      "git add"
+    ]
   },
   "devDependencies": {
+    "@eslint/js": "^9.39.1",
     "@rollup/plugin-commonjs": "^28.0.0",
     "@rollup/plugin-json": "^6.1.0",
     "@rollup/plugin-node-resolve": "^15.1.0",
@@ -32,7 +65,16 @@
     "@rollup/plugin-typescript": "^11.1.6",
     "@types/react": "^19.2.4",
     "@types/react-dom": "^19.2.3",
+    "@typescript-eslint/eslint-plugin": "^8.47.0",
+    "@typescript-eslint/parser": "^8.47.0",
+    "eslint": "^9.39.1",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "globals": "^16.5.0",
     "husky": "^9.1.7",
+    "lint-staged": "^16.2.7",
+    "prettier": "^3.6.2",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "rollup": "^4.53.2",

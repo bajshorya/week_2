@@ -1,13 +1,11 @@
-// Basic field configuration
 interface FieldConfig {
   name: string;
   label?: string;
   required?: boolean;
-  validate?: (value: any, formData?: FormData) => string | undefined;
+  validate?: (value: unknown, formData?: FormData) => string | undefined;
   dependencies?: string[];
 }
 
-// Input field types
 type InputType =
   | "text"
   | "email"
@@ -24,21 +22,18 @@ type InputType =
   | "datetime-local"
   | "custom";
 
-// Field value types
 type FieldValue =
   | string
   | number
   | boolean
   | File
   | FileList
-  | any[]
+  | unknown[]
   | null
   | undefined;
 
-// Form data structure
 type FormData = Record<string, FieldValue>;
 
-// Validation rules
 interface ValidationRule {
   required?: boolean | string;
   min?: number | string;
@@ -53,7 +48,6 @@ interface ValidationRule {
   message?: string;
 }
 
-// Field configuration with validation
 interface ValidatedFieldConfig extends FieldConfig {
   type?: InputType;
   validation?: ValidationRule;
@@ -61,14 +55,12 @@ interface ValidatedFieldConfig extends FieldConfig {
   multiple?: boolean;
 }
 
-// Validation result
 interface ValidationResult {
   isValid: boolean;
   errors: Record<string, string | undefined>;
   touched: Record<string, boolean>;
 }
 
-// Form state
 interface FormState {
   values: FormData;
   errors: Record<string, string | undefined>;
@@ -78,7 +70,6 @@ interface FormState {
   isDirty: boolean;
 }
 
-// Form configuration
 interface FormConfig {
   fields: Record<string, ValidatedFieldConfig>;
   initialValues?: FormData;
