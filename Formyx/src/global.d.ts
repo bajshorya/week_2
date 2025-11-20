@@ -1,34 +1,34 @@
-declare module "*.css" {
+declare module '*.css' {
   const content: { [className: string]: string };
   export default content;
 }
 
-declare module "@shoryabaj/formyx/style" {
+declare module '@shoryabaj/formyx/style' {
   const content: string;
   export default content;
 }
 
-declare module "@shoryabaj/formyx/style.css" {
+declare module '@shoryabaj/formyx/style.css' {
   const content: string;
   export default content;
 }
 
-declare module "@shoryabaj/formyx/formyx.css" {
+declare module '@shoryabaj/formyx/formyx.css' {
   const content: string;
   export default content;
 }
 
-declare module "@shoryabaj/formyx/all" {
+declare module '@shoryabaj/formyx/all' {
   const content: string;
   export default content;
 }
 
-declare module "@shoryabaj/formyx/all.css" {
+declare module '@shoryabaj/formyx/all.css' {
   const content: string;
   export default content;
 }
 
-declare module "@shoryabaj/formyx/dist/*" {
+declare module '@shoryabaj/formyx/dist/*' {
   const content: string;
   export default content;
 }

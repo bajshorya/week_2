@@ -8,7 +8,6 @@ import globals from "globals";
 
 /** @type {import('eslint').Linter.Config[]} */
 export default [
-  // Ignore patterns
   {
     ignores: [
       "node_modules/",
@@ -24,7 +23,6 @@ export default [
     ],
   },
 
-  // JavaScript/TypeScript base config
   {
     files: ["**/*.{js,jsx,ts,tsx}"],
     languageOptions: {
@@ -50,32 +48,26 @@ export default [
       "jsx-a11y": jsxA11y,
     },
     rules: {
-      // TypeScript specific rules
       "@typescript-eslint/no-unused-vars": "error",
       "@typescript-eslint/no-explicit-any": "warn",
       "@typescript-eslint/explicit-function-return-type": "off",
       "@typescript-eslint/explicit-module-boundary-types": "off",
 
-      // React specific rules
       "react/react-in-jsx-scope": "off",
       "react/prop-types": "off",
       "react/jsx-uses-react": "off",
 
-      // React Hooks rules
       "react-hooks/rules-of-hooks": "error",
       "react-hooks/exhaustive-deps": "warn",
 
-      // General code quality
       "no-console": "warn",
       "prefer-const": "error",
       "no-var": "error",
       eqeqeq: ["error", "always"],
       curly: ["error", "all"],
 
-      // Import/export rules
       "no-duplicate-imports": "error",
 
-      // Accessibility
       "jsx-a11y/alt-text": "warn",
       "jsx-a11y/anchor-is-valid": "warn",
     },
@@ -86,7 +78,6 @@ export default [
     },
   },
 
-  // Config files specific rules
   {
     files: ["*.config.js", "*.config.mjs"],
     languageOptions: {
@@ -100,7 +91,6 @@ export default [
     },
   },
 
-  // TypeScript specific config (extends base)
   {
     files: ["**/*.ts", "**/*.tsx"],
     rules: {
@@ -109,7 +99,6 @@ export default [
     },
   },
 
-  // React specific config
   {
     files: ["**/*.jsx", "**/*.tsx"],
     rules: {

@@ -7,20 +7,20 @@ interface FieldConfig {
 }
 
 type InputType =
-  | "text"
-  | "email"
-  | "password"
-  | "number"
-  | "tel"
-  | "url"
-  | "textarea"
-  | "select"
-  | "checkbox"
-  | "radio"
-  | "file"
-  | "date"
-  | "datetime-local"
-  | "custom";
+  | 'text'
+  | 'email'
+  | 'password'
+  | 'number'
+  | 'tel'
+  | 'url'
+  | 'textarea'
+  | 'select'
+  | 'checkbox'
+  | 'radio'
+  | 'file'
+  | 'date'
+  | 'datetime-local'
+  | 'custom';
 
 type FieldValue =
   | string
@@ -75,8 +75,8 @@ interface FormConfig {
   initialValues?: FormData;
   onSubmit?: (data: FormData) => void | Promise<void>;
   validate?: (values: FormData) => Record<string, string | undefined>;
-  validationMode?: "onChange" | "onBlur" | "onSubmit" | "onTouched";
-  reValidateMode?: "onChange" | "onBlur";
+  validationMode?: 'onChange' | 'onBlur' | 'onSubmit' | 'onTouched';
+  reValidateMode?: 'onChange' | 'onBlur';
 }
 
 export type {

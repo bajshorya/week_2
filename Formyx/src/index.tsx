@@ -1,8 +1,8 @@
-import React from "react";
-import Form from "./components/page";
-import InputField from "./components/InputField";
-import { useDebounce, useThrottle } from "./hooks";
-import "./styles/formyx.css";
+import React from 'react';
+import Form from './components/page';
+import InputField from './components/InputField';
+import { useDebounce, useThrottle } from './hooks';
+import './styles/formyx.css';
 
 const Formyx = () => {
   return (
@@ -26,4 +26,4 @@ export type {
   FormState,
   FormConfig,
   InputFieldProps,
-} from "./types";
+} from './types';

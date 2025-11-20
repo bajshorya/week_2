@@ -7,7 +7,7 @@ interface FieldConfig {
     validate?: (value: unknown, formData?: FormData) => string | undefined;
     dependencies?: string[];
 }
-type InputType = "text" | "email" | "password" | "number" | "tel" | "url" | "textarea" | "select" | "checkbox" | "radio" | "file" | "date" | "datetime-local" | "custom";
+type InputType = 'text' | 'email' | 'password' | 'number' | 'tel' | 'url' | 'textarea' | 'select' | 'checkbox' | 'radio' | 'file' | 'date' | 'datetime-local' | 'custom';
 type FieldValue = string | number | boolean | File | FileList | unknown[] | null | undefined;
 type FormData = Record<string, FieldValue>;
 interface ValidationRule {
@@ -47,8 +47,8 @@ interface FormConfig {
     initialValues?: FormData;
     onSubmit?: (data: FormData) => void | Promise<void>;
     validate?: (values: FormData) => Record<string, string | undefined>;
-    validationMode?: "onChange" | "onBlur" | "onSubmit" | "onTouched";
-    reValidateMode?: "onChange" | "onBlur";
+    validationMode?: 'onChange' | 'onBlur' | 'onSubmit' | 'onTouched';
+    reValidateMode?: 'onChange' | 'onBlur';
 }
 
 interface InputFieldProps {
@@ -83,7 +83,7 @@ interface InputFieldProps {
     accept?: string;
     debounce?: number;
     throttle?: number;
-    validationStrategy?: "debounce" | "throttle" | "immediate";
+    validationStrategy?: 'debounce' | 'throttle' | 'immediate';
 }
 
 type UseDebounce = <T extends unknown[]>(fn: (...args: T) => void, delay?: number) => (...args: T) => void;

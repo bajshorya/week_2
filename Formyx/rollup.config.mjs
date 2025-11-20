@@ -81,5 +81,4 @@ const typesConfig = {
   external: ["react", "react-dom", "*.css"],
 };
 
-// Only export core and all styles configs
 export default [cssConfig, allStylesConfig, mainConfig, typesConfig];

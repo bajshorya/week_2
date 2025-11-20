@@ -1,8 +1,8 @@
-import React from "react";
-import type { FieldValue, ValidatedFieldConfig, FormData } from "../types";
-import { useDebounce, useThrottle } from "../hooks";
+import React from 'react';
+import type { FieldValue, ValidatedFieldConfig, FormData } from '../types';
+import { useDebounce, useThrottle } from '../hooks';
 
-interface InputFieldProps extends Omit<ValidatedFieldConfig, "validate"> {
+interface InputFieldProps extends Omit<ValidatedFieldConfig, 'validate'> {
   value: FieldValue;
   onChange: (name: string, value: FieldValue, shouldValidate?: boolean) => void;
   onBlur: (name: string, touched?: boolean) => void;
@@ -24,12 +24,12 @@ interface InputFieldProps extends Omit<ValidatedFieldConfig, "validate"> {
   accept?: string;
   debounce?: number;
   throttle?: number;
-  validationStrategy?: "debounce" | "throttle" | "immediate";
+  validationStrategy?: 'debounce' | 'throttle' | 'immediate';
 }
 
 const InputField: React.FC<InputFieldProps> = ({
   name,
-  type = "text",
+  type = 'text',
   label,
   value,
   options = [],
@@ -41,7 +41,7 @@ const InputField: React.FC<InputFieldProps> = ({
   touched = false,
   onChange,
   onBlur,
-  className = "",
+  className = '',
   style,
   placeholder,
   disabled = false,
@@ -56,7 +56,7 @@ const InputField: React.FC<InputFieldProps> = ({
   accept,
   debounce = 300,
   throttle = 300,
-  validationStrategy = "debounce",
+  validationStrategy = 'debounce',
   ...props
 }) => {
   const debouncedValidation = useDebounce((name: string, value: FieldValue) => {
@@ -75,16 +75,16 @@ const InputField: React.FC<InputFieldProps> = ({
     let newValue: FieldValue;
 
     switch (type) {
-      case "checkbox":
+      case 'checkbox':
         newValue = (event.target as HTMLInputElement).checked;
         break;
-      case "file":
+      case 'file':
         newValue = (event.target as HTMLInputElement).files;
         break;
-      case "number":
-        newValue = event.target.value === "" ? "" : Number(event.target.value);
+      case 'number':
+        newValue = event.target.value === '' ? '' : Number(event.target.value);
         break;
-      case "select":
+      case 'select':
         if (multiple) {
           const selectedOptions = Array.from(
             (event.target as HTMLSelectElement).selectedOptions
@@ -100,15 +100,15 @@ const InputField: React.FC<InputFieldProps> = ({
 
     onChange(name, newValue, false);
 
-    if (type !== "checkbox" && type !== "radio" && type !== "file") {
+    if (type !== 'checkbox' && type !== 'radio' && type !== 'file') {
       switch (validationStrategy) {
-        case "debounce":
+        case 'debounce':
           debouncedValidation(name, newValue);
           break;
-        case "throttle":
+        case 'throttle':
           throttledValidation(name, newValue);
           break;
-        case "immediate":
+        case 'immediate':
           onChange(name, newValue, true);
           break;
       }
@@ -123,16 +123,16 @@ const InputField: React.FC<InputFieldProps> = ({
   };
 
   const getInputClassName = () => {
-    const baseClass = "formyx-input";
-    const stateClass = error && touched ? "formyx-input-error" : "";
+    const baseClass = 'formyx-input';
+    const stateClass = error && touched ? 'formyx-input-error' : '';
     return `${baseClass} ${stateClass} ${className}`.trim();
   };
 
   const renderInput = () => {
     const commonProps = {
       name,
-      value: type === "checkbox" ? undefined : (value as string | number),
-      checked: type === "checkbox" ? Boolean(value) : undefined,
+      value: type === 'checkbox' ? undefined : (value as string | number),
+      checked: type === 'checkbox' ? Boolean(value) : undefined,
       onChange: handleChange,
       onBlur: handleBlur,
       className: getInputClassName(),
@@ -152,12 +152,12 @@ const InputField: React.FC<InputFieldProps> = ({
     };
 
     switch (type) {
-      case "textarea":
+      case 'textarea':
         return (
           <textarea {...commonProps} value={value as string} rows={rows} />
         );
 
-      case "select":
+      case 'select':
         return (
           <select {...commonProps} value={value as string} multiple={multiple}>
             <option value="">Select an option</option>
@@ -169,12 +169,12 @@ const InputField: React.FC<InputFieldProps> = ({
           </select>
         );
 
-      case "checkbox":
+      case 'checkbox':
         return (
           <input {...commonProps} type="checkbox" checked={Boolean(value)} />
         );
 
-      case "radio":
+      case 'radio':
         return (
           <div className="formyx-radio-group">
             {options.map((option, index) => (
@@ -196,7 +196,7 @@ const InputField: React.FC<InputFieldProps> = ({
           </div>
         );
 
-      case "file":
+      case 'file':
         return (
           <input
             {...commonProps}

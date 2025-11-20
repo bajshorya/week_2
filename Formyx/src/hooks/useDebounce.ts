@@ -1,4 +1,4 @@
-import { useRef, useCallback } from "react";
+import { useRef, useCallback } from 'react';
 const useDebounce = <T extends unknown[]>(
   fn: (...args: T) => void,
   delay = 1000

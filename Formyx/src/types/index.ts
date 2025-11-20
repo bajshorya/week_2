@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import type {
   FieldConfig,
   InputType,
@@ -9,7 +9,7 @@ import type {
   ValidationResult,
   FormState,
   FormConfig,
-} from "./inputTypes";
+} from './inputTypes';
 
 export type {
   FieldConfig,
@@ -52,5 +52,5 @@ export interface InputFieldProps {
   accept?: string;
   debounce?: number;
   throttle?: number;
-  validationStrategy?: "debounce" | "throttle" | "immediate";
+  validationStrategy?: 'debounce' | 'throttle' | 'immediate';
 }
